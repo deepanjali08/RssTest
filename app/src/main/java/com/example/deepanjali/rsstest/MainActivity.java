@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             recyclerView = (RecyclerView) rootview.findViewById(R.id.card_recycler_view);
-
+//
             initViews();
 
             return rootView;
