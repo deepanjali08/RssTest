@@ -3,6 +3,8 @@ package com.example.deepanjali.rsstest;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -10,13 +12,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -110,15 +117,68 @@ public class MainActivity extends AppCompatActivity {
             return fragment;
         }
 
+        private ArrayList<String> countries;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            initViews();
             return rootView;
+
+
+        }
+        private void initViews(){
+            RecyclerView recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
+            recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(layoutManager);
+            countries = new ArrayList<>();
+            countries.add("Australia");
+            countries.add("India");
+            countries.add("United States of America");
+            countries.add("Germany");
+            countries.add("Russia");
+            RecyclerView.Adapter adapter = new DataAdapter(countries);
+            recyclerView.setAdapter(adapter);
+
+            recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        return true;
+                    }
+
+                });
+
+                @Override
+                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+                    View child = rv.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && gestureDetector.onTouchEvent(e)) {
+                        int position = rv.getChildAdapterPosition(child);
+                        Toast.makeText(getApplicationContext(), countries.get(position), Toast.LENGTH_SHORT).show();
+                    }
+
+                    return false;
+                }
+
+                @Override
+                public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+                }
+
+                @Override
+                public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+                }
+            });
         }
     }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
