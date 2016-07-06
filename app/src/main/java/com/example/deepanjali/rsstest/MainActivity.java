@@ -118,22 +118,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private ArrayList<String> countries;
-
+         RecyclerView recyclerView;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            recyclerView = (RecyclerView) rootview.findViewById(R.id.card_recycler_view);
+
             initViews();
+
             return rootView;
 
 
         }
         private void initViews(){
-            RecyclerView recyclerView = (RecyclerView)findViewById(R.id.card_recycler_view);
             recyclerView.setHasFixedSize(true);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
             recyclerView.setLayoutManager(layoutManager);
             countries = new ArrayList<>();
             countries.add("Australia");
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(adapter);
 
             recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                GestureDetector gestureDetector = new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+                GestureDetector gestureDetector = new GestureDetector(getActivity().getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
 
                     @Override
                     public boolean onSingleTapUp(MotionEvent e) {
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     View child = rv.findChildViewUnder(e.getX(), e.getY());
                     if (child != null && gestureDetector.onTouchEvent(e)) {
                         int position = rv.getChildAdapterPosition(child);
-                        Toast.makeText(getApplicationContext(), countries.get(position), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), countries.get(position), Toast.LENGTH_SHORT).show();
                     }
 
                     return false;
