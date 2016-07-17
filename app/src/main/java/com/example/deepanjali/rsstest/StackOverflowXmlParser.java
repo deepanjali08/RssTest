@@ -3,6 +3,7 @@ package com.example.deepanjali.rsstest;
 /**
  * Created by deepanjali on 17/7/16.
  */
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.util.Xml;
 

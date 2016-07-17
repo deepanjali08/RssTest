@@ -47,8 +47,8 @@ public class DataAdapter  extends RecyclerView.Adapter<DataAdapter.ViewHolder>{
             @Override
             public void onClick(View v) {
 
-                int tag = (Integer) v.getTag();
-                String link1 = countries.get(tag).link;
+                int tag=(Integer)v.getTag();
+                String link1= countries.get(tag).link;
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW);
                 browserIntent.setData(Uri.parse(link1));
                 v.getContext().startActivity(browserIntent);
